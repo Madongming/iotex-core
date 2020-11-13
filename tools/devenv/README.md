@@ -1,8 +1,9 @@
 # Start dev env as easy as possible
 
 This is the script to start the local development environment of IoTeX blockchain which basically:
-- starts an IoTeX blockchain in standalone mode and creates the following 10 accounts with IOTEX_IMAGE
-- installs ioctl if not already installed, sets ioctl's endpoint to localhost:14014
+- Build from local master HEAD
+- Starts an IoTeX blockchain in standalone mode and creates the following 10 accounts with IOTEX_IMAGE
+- Installs ioctl if not already installed, sets ioctl's endpoint to localhost:14014
 
 ```
 (0) io1pt6zphmmc6c8wzdlnuu0gd42la88jtgywcfvsm
@@ -23,10 +24,31 @@ This is the script to start the local development environment of IoTeX blockchai
 ./setup.sh -c  # clean all data except image
 ./control.sh stop  # stop the server
 ./control.sh start # start the server
+./run-example.sh   # run an example contract project
 ```
 After installation of this local development environment, one can use:
 - truffle to write/compile/test contracts and ioctl to deploy them, e.g., https://docs.iotex.io/developer/ioctl/contract.html
-- [IoTeX Studio](http://ide.iotex.io/) to write/compile/test/deploy contracts
 - [ioPay](https://iopay.iotex.io/) Set to use the local endpoint, as shown below:
 
+Unlock your wallet
 ![](images/01.jpeg)
+
+Set Custom RPC
+![](images/02.jpeg)
+![](images/03.jpeg)
+
+- [IoTeX Studio](http://ide.iotex.io/) to write/compile/test/deploy contracts
+
+Set connect to ioPay, as show below
+
+Choose the correct compiler version
+![](images/04.jpeg)
+
+Choose the ioPay
+![](images/05.jpeg)
+
+Choose the account used to unlock iopay
+![](images/06.jpeg)
+
+If you use the `ioctl contract share <code dir>` command to start the shared directory, you can click the "link" icon to expand the shared directo
+![](images/07.jpeg)

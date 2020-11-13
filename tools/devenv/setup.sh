@@ -38,6 +38,7 @@ REPO_ABS_DIR=$(cd "$PROJECT_ABS_DIR/../..";pwd)
 
 # Image
 IOTEX_IMAGE="iotex-core:local"
+IOTEX_ENVOY_IMAGE="envoyproxy/envoy-alpine:d920944aed67425f91fc203774aebce9609e5d9a"
 
 pushd () {
     command pushd "$@" > /dev/null
@@ -105,8 +106,10 @@ function copyConfigs() {
     \cp -f $PROJECT_ABS_DIR/docker-compose.yml $DOCKER_COMPOSE_HOME/docker-compose.yml
     \cp -f $REPO_ABS_DIR/config/standalone-config.yaml $IOTEX_HOME/etc/config.yaml
     \cp -f $REPO_ABS_DIR/config/standalone-genesis.yaml $IOTEX_HOME/etc/genesis.yaml
+    \cp -f $PROJECT_ABS_DIR/envoy.yaml $IOTEX_HOME/etc/envoy.yaml
     echo "IOTEX_HOME=$IOTEX_HOME
-IOTEX_IMAGE=$IOTEX_IMAGE" > $DOCKER_COMPOSE_HOME/.env
+IOTEX_IMAGE=$IOTEX_IMAGE
+IOTEX_ENVOY_IMAGE=$IOTEX_ENVOY_IMAGE" > $DOCKER_COMPOSE_HOME/.env
 }
 
 function createAccounts() {
@@ -170,6 +173,17 @@ function cleanAll() {
     rm -rf $IOTEX_HOME $USER_DIR
 }
 
+function readme() {
+    echo ""
+    echo -e "${YELLOW} Then, you can start ioPay, configure an account, and link it to localhost:8089. For details, see readme.${NC}"
+
+    echo -e "${YELLOW} Next is to edit the contract code. After you create a simple code, you can use the:${NC}"
+
+    echo -e "${RED} \t ioctl contract share <code path> ${NC}"
+
+    echo -e "${YELLOW} command to start an ide (you can run the sample code to see the effect: \`run-example.sh\`), and you can use this Add, delete and edit code files in <code path>. Finally, you can also compile and deploy execution code through iopay. See readme for details.${NC}"
+}
+
 function main() {
     # Check and clean
     checkDockerPermissions     # Determine the current user can run docker
@@ -204,11 +218,14 @@ function main() {
 
     # Start server
     startup || exit 8
-    echo 'Listening on 127.0.0.1:14014'
+    echo 'Listening on 127.0.0.1:8089(http2) and 127.0.0.1:14014(rpc)'
 
     # Set ioctl endpoint
     setIoctlEndpoint || exit 9
 
+    ## echo readme
+    readme
+    
     # Register the installation directory to the user directory file for the next startup
     registSetup
 }

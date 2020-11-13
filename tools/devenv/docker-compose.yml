@@ -13,3 +13,14 @@ services:
       - $IOTEX_HOME/etc/config.yaml:/etc/iotex/config_override.yaml:ro
       - $IOTEX_HOME/etc/genesis.yaml:/etc/iotex/genesis.yaml:ro
     command: iotex-server -config-path=/etc/iotex/config_override.yaml -genesis-path=/etc/iotex/genesis.yaml -plugin=gateway
+
+  envoy:
+    container_name: iotex-envoy
+    image: ${IOTEX_ENVOY_IMAGE}
+    ports:
+      - 8089:8089
+    links:
+      - iotex
+    volumes:
+      - $IOTEX_HOME/etc/envoy.yaml:/config/envoy.yaml:ro
+    command: envoy --v2-config-only -c /config/envoy.yaml    
