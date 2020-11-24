@@ -30,11 +30,12 @@ After installation of this local development environment, one can use:
 - truffle to write/compile/test contracts and ioctl to deploy them, e.g., https://docs.iotex.io/developer/ioctl/contract.html
 - [ioPay](https://iopay.iotex.io/) Set to use the local endpoint, as shown below:
 
-Unlock your wallet
+Unlock your wallet use the generated private key
 ![](images/01.jpeg)
 
 Set Custom RPC
 ![](images/02.jpeg)
+
 ![](images/03.jpeg)
 
 - [IoTeX Studio](http://ide.iotex.io/) to write/compile/test/deploy contracts
@@ -50,5 +51,5 @@ Choose the ioPay
 Choose the account used to unlock iopay
 ![](images/06.jpeg)
 
-If you use the `ioctl contract share <code dir>` command to start the shared directory, you can click the "link" icon to expand the shared directo
+If you use the `ioctl contract share <code dir>` command to start the shared directory, you can click the "link" icon to expand the shared directory
 ![](images/07.jpeg)
