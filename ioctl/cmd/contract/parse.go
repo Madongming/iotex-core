@@ -19,6 +19,8 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 
+	"github.com/iotexproject/iotex-address/address"
+
 	"github.com/iotexproject/iotex-core/ioctl/output"
 	"github.com/iotexproject/iotex-core/ioctl/util"
 )
@@ -169,6 +171,7 @@ func parseInputArgument(t *abi.Type, arg interface{}) (interface{}, error) {
 			return nil, ErrInvalidArg
 		}
 
+		var value int64
 		switch t.Size {
 		default:
 			if k == reflect.String {
@@ -181,19 +184,22 @@ func parseInputArgument(t *abi.Type, arg interface{}) (interface{}, error) {
 			}
 		case 8:
 			if k == reflect.String {
-				arg, err = strconv.ParseInt(arg.(string), 10, 8)
+				value, err = strconv.ParseInt(arg.(string), 10, 8)
+				arg = int8(value)
 			} else {
 				arg = int8(arg.(float64))
 			}
 		case 16:
 			if k == reflect.String {
-				arg, err = strconv.ParseInt(arg.(string), 10, 16)
+				value, err = strconv.ParseInt(arg.(string), 10, 16)
+				arg = int16(value)
 			} else {
 				arg = int16(arg.(float64))
 			}
 		case 32:
 			if k == reflect.String {
-				arg, err = strconv.ParseInt(arg.(string), 10, 32)
+				value, err = strconv.ParseInt(arg.(string), 10, 32)
+				arg = int32(value)
 			} else {
 				arg = int32(arg.(float64))
 			}
@@ -219,6 +225,7 @@ func parseInputArgument(t *abi.Type, arg interface{}) (interface{}, error) {
 			return nil, ErrInvalidArg
 		}
 
+		var value uint64
 		switch t.Size {
 		default:
 			if k == reflect.String {
@@ -235,19 +242,22 @@ func parseInputArgument(t *abi.Type, arg interface{}) (interface{}, error) {
 			}
 		case 8:
 			if k == reflect.String {
-				arg, err = strconv.ParseUint(arg.(string), 10, 8)
+				value, err = strconv.ParseUint(arg.(string), 10, 8)
+				arg = uint8(value)
 			} else {
 				arg = uint8(arg.(float64))
 			}
 		case 16:
 			if k == reflect.String {
-				arg, err = strconv.ParseUint(arg.(string), 10, 16)
+				value, err = strconv.ParseUint(arg.(string), 10, 16)
+				arg = uint16(value)
 			} else {
 				arg = uint16(arg.(float64))
 			}
 		case 32:
 			if k == reflect.String {
-				arg, err = strconv.ParseUint(arg.(string), 10, 32)
+				value, err = strconv.ParseUint(arg.(string), 10, 32)
+				arg = uint32(value)
 			} else {
 				arg = uint32(arg.(float64))
 			}
@@ -364,7 +374,10 @@ func parseOutputArgument(v interface{}, t *abi.Type) (string, bool) {
 			var ethAddr common.Address
 			ethAddr, ok = v.(common.Address)
 			if ok {
-				str = ethAddr.String()
+				ioAddress, err := address.FromBytes(ethAddr.Bytes())
+				if err == nil {
+					str = ioAddress.String()
+				}
 			}
 		}
 
